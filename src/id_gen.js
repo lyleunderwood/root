@@ -1,7 +1,7 @@
 var crypto = require('crypto');
-var md5 = crypto.createHash('md5');
 
 module.exports = function() {
+  var md5 = crypto.createHash('md5');
   var args = [].concat.apply([], arguments);
   var hashVar = args + '_' + (+new Date()) + '_' + (Math.random() * 1000);
 
