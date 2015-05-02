@@ -2,5 +2,23 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
+
+  var terminal = new Terminal(socket);
+
+  var commandList = [
+    'globalState',
+    'interruptCommandResponse',
+    'clientDeath',
+    'clientWin'
+  ];
+
+  commandList.forEach(function(c) {
+    socket.on(c, function(msg) {
+      console.log(c, msg);
+    });
+  });
+
+
 </script>
+<script src="/client/terminal.js"></script>
 <p>yee</p>
