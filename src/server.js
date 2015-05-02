@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var idGen = require('./id_gen');
+var Command = require('./command');
 
 var commands = {
   netscan: {
@@ -24,6 +25,20 @@ io.on('connection', function(socket) {
     commands: commands,
     serverReady: true,
     sessionId: sessionId
+  });
+
+  var command = new Command([1], sessionId);
+
+  socket.emit('commandResponse', {
+    commandId: command.id
+  });
+
+  command.on('status', function(response) {
+    socket.emit('commandStatus', {
+      commandId: response.id,
+      status: response.status,
+      response: response.response
+    });
   });
 });
 
