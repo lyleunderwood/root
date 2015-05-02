@@ -5,6 +5,7 @@ basic protocol
 2. SERVER: send global state
   - obj: available commands by name
   - bool: server ready for connections
+  - string: session id
 3. CLIENT: user command
   - string: name
   - array: arguments
