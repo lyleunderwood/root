@@ -9,6 +9,13 @@ var CommandList = function() {
     this._commands[name] = obj;
   };
 
+  this.addCommands = function() {
+    var self = this;
+    [].concat.apply([], arguments).forEach(function(cmd) {
+      self.addCommand(cmd.prototype.name, cmd);
+    });
+  };
+
   this.getCommand = function(name) {
     if (!this._commands[name]) {
       throw new Error('no cammand found called ' + name + '!');
