@@ -59,3 +59,5 @@ var Command = function(args, sessionId) {
 };
 
 util.inherits(Command, EventEmitter);
+
+module.exports = Command;
