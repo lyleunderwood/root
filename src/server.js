@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 var idGen = require('./id_gen');
 var commands = require('./commands');
 var CommandList = require('./command_list');
+var GameList = require('./game_list');
 
 var commands = {
   netscan: {

@@ -1,18 +1,25 @@
 var Command = require('../command');
 var util = require('util');
+var ScanningSessions = require('../scanning_sessions');
 
-var Netscan = function(args, sessionId) {
+var Netscan = function(args, sessionId, socket) {
   this.args = args;
   this.sessionId = sessionId;
+  this.socket = socket;
+  this.targetPlayers = 2;
 
   this.run = function() {
     console.log('running netscan for', this.sessionId);
 
-    this.status('success', {
-      playerList: [1]
-    });
+    ScanningSessions.addScan(this, this.socket, this.sessionId);
 
-    this.finished();
+    this.status('running', ScanningSessions.getScanningInfo());
+  };
+
+  this.matched = function(game) {
+    this.status('success', {
+      gameId: game.id
+    });
   };
 };
 
