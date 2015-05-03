@@ -23,10 +23,13 @@ Central Commands:
 
 - mount: this can install different attack/defense programs onto a port. it takes variable amounts of time for the program to be mounted
 
-- 
+---
 
 The most basic game loop is to probe each individual port until you find the root port, then rend it. 
 
 The first layer of complexity, is the ability to port scan and port lock. This gives you your first defensive measure, seeing what the other player is doing and stopping them. 
 
-The next layer of complexity is the ability to 
+The next layer of complexity is the ability to trace. Tracing is used under the same context as port lock, but instead of rebuffing the player you are using it as a chance to gather information about them.
+
+On top of this, is the ability to reroot, moving your root directory to another port. This is a defensive counter measure to foil an opponent who has discovered where your root directy is located.
+
