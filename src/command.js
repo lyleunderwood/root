@@ -1,49 +1,59 @@
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
+var extend = require('extend');
 var idGen = require('./id_gen');
 var ActiveCommands = require('./active_commands');
 
-var Command = function(args, sessionId) {
-};
+function Command(args, sessionId) {
+  this.constructor.super_.apply(this, arguments);
+
+  this.sessionId = sessionId;
+  this.args = args;
+}
 
 util.inherits(Command, EventEmitter);
 
-Command.prototype.name = 'unimplemented';
-Command.prototype.helpText = 'unimplemented command';
+extend(Command.prototype, {
+  name: 'unimplemented',
 
-Command.prototype.makeId = function() {
-  this.id = idGen(this.name, this.sessionId);
-};
+  helpText: 'unimplemented command',
 
-Command.prototype.start = function() {
-  this.makeId();
-  ActiveCommands.addCommand(this);
-  this.run();
-  return this.id;
-};
+  sessionId: null,
 
-Command.prototype.run = function() {
-  throw new Error('run is unimplemented');
-};
+  makeId: function() {
+    this.id = idGen(this.name, this.sessionId);
+  },
 
-Command.prototype.status = function(status, response) {
-  this.emit('status', {
-    id: this.id,
-    status: status,
-    response: response
-  });
+  start: function() {
+    this.makeId();
+    ActiveCommands.addCommand(this);
+    this.run();
+    return this.id;
+  },
 
-  if (['success', 'failure', 'interrupt'].indexOf(status) != -1) {
-    this.finished();
+  run: function() {
+    throw new Error('run is unimplemented');
+  },
+
+  status: function(status, response) {
+    this.emit('status', {
+      id: this.id,
+      status: status,
+      response: response
+    });
+
+    if (['success', 'failure', 'interrupt'].indexOf(status) != -1) {
+      this.finished();
+    }
+  },
+
+  interrupt: function() {
+    this.status('interrupt', {});
+  },
+
+  finished: function() {
+    this.emit('finished');
   }
-};
-
-Command.prototype.interrupt = function() {
-  this.status('interrupt', {});
-};
-
-Command.prototype.finished = function() {
-  this.emit('finished');
-};
+});
 
 module.exports = Command;

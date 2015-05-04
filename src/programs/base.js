@@ -1,17 +1,15 @@
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
+var extend = require('extend');
 
 function Program() {
-  this.constructor.apply(this, arguments);
+  this.constructor.super_.apply(this, arguments);
 }
 
 util.inherits(Program, EventEmitter);
 
-Program.prototype = {
+extend(Program.prototype, {
   type: 'unimplemented',
-
-  constructor: function() {
-  },
 
   start: function() {
     this._started = true;
@@ -20,7 +18,7 @@ Program.prototype = {
   stop: function() {
     this._started = false;
   }
-};
+});
 
 module.exports = Program;
 

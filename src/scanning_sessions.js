@@ -1,20 +1,22 @@
 var GameList = require('./game_list');
+var util = require('util');
+var extend = require('extend');
 
 function ScanningSessions() {
-  this.constructor.apply(this, arguments);
+  this.constructor.super_.apply(this, arguments);
+
+  this.scans = [];
+
+  var self = this;
+  this.interval = setInterval(function() {
+    self._matchScans();
+  }, 2000);
 }
 
-ScanningSessions.prototype = {
+util.inherits(ScanningSessions, Object);
+
+extend(ScanningSessions.prototype, {
   scans: null,
-
-  constructor: function() {
-    this.scans = [];
-
-    var self = this;
-    this.interval = setInterval(function() {
-      self._matchScans();
-    }, 2000);
-  },
 
   addScan: function(command, socket, sessionId) {
     this.scans.push({
@@ -119,7 +121,7 @@ ScanningSessions.prototype = {
 
     return figure;
   }
-};
+});
 
 module.exports = new ScanningSessions();
 
