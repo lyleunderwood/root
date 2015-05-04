@@ -26,6 +26,14 @@ extend(Game.prototype, {
     this.id = idGen.apply(null, this.scans.map(function(scan) { return scan.sessionId; }));
   },
 
+  rigById: function(id) {
+    return this.rigs.filter(function(rig) { return rig.id == id; })[0];
+  },
+
+  findFoeRigs: function(friendId) {
+    return this.rigs.filter(function(rig) { return rig.id != friendId;  });
+  },
+
   _buildRigs: function() {
     this.rigs = [];
 
