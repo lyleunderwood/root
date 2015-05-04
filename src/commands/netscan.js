@@ -1,12 +1,10 @@
 var Command = require('../command');
 var util = require('util');
+var extend = require('extend');
 var ScanningSessions = require('../scanning_sessions');
 
-var Netscan = function(args, sessionId, socket) {
-  this.args = args;
-  this.sessionId = sessionId;
-  this.socket = socket;
-  this.targetPlayers = 2;
+var Netscan = function(args, sessionId, socket, game) {
+  Command.apply(this, arguments);
 
   this.run = function() {
     console.log('running netscan for', this.sessionId);
@@ -25,7 +23,10 @@ var Netscan = function(args, sessionId, socket) {
 
 util.inherits(Netscan, Command);
 
-Netscan.prototype.name = 'netscan';
-Netscan.prototype.helpText = 'scan network for attack vectors';
+extend(Netscan.prototype, {
+  targetPlayers: 2,
+  name: 'netscan',
+  helpText: 'scan network for attack vectors'
+});
 
 module.exports = Netscan;
