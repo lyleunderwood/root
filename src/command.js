@@ -4,11 +4,15 @@ var extend = require('extend');
 var idGen = require('./id_gen');
 var ActiveCommands = require('./active_commands');
 
-function Command(args, sessionId) {
-  this.constructor.super_.apply(this, arguments);
+function Command(args, sessionId, socket, game) {
+  EventEmitter.apply(this, arguments);
 
   this.sessionId = sessionId;
   this.args = args;
+  this.socket = socket;
+  this.game = game;
+
+  this.makeId();
 }
 
 util.inherits(Command, EventEmitter);
@@ -25,7 +29,6 @@ extend(Command.prototype, {
   },
 
   start: function() {
-    this.makeId();
     ActiveCommands.addCommand(this);
     this.run();
     return this.id;

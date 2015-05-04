@@ -10,6 +10,7 @@ function Rig(sessionId, socket) {
   this.socket = socket;
 
   this._buildPorts();
+  this._setupSocket();
 }
 
 util.inherits(Rig, EventEmitter);
@@ -31,7 +32,8 @@ extend(Rig.prototype, {
       self.emit('command', {
         sessionId: self.sessionId,
         name: params.name,
-        arguments: params.arguments
+        arguments: params.arguments,
+        socket: self.socket
       });
     });
   },

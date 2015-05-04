@@ -28,21 +28,27 @@ io.on('connection', function(socket) {
     sessionId: sessionId
   });
 
-  var command = CommandList.buildCommand('netscan', [1], sessionId);
+  socket.on('command', function(params) {
+    if (params.name != 'netscan') {
+      return;
+    }
 
-  socket.emit('commandResponse', {
-    commandId: command.id
-  });
+    var cmd = CommandList.buildCommand('netscan', params.arguments, params.sessionId, socket);
 
-  command.on('status', function(response) {
-    socket.emit('commandStatus', {
-      commandId: response.id,
-      status: response.status,
-      response: response.response
+    socket.emit('commandResponse', {
+      commandId: cmd.id
     });
-  });
 
-  command.start();
+    cmd.on('status', function(response) {
+      socket.emit('commandStatus', {
+        commandId: response.id,
+        status: response.status,
+        response: response.response
+      });
+    });
+
+    cmd.start();
+  });
 });
 
 http.listen(3000, function(){
