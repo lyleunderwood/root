@@ -35,7 +35,27 @@ extend(Game.prototype, {
       self.rigs.push(rig);
 
       rig.on('command', function(params) {
-        var cmd = CommandList.buildCommand(params.name, params.arguments, params.sessionId, this);
+        var cmd = CommandList.buildCommand(
+          params.name,
+          params.arguments,
+          params.sessionId,
+          params.socket,
+          self
+        );
+
+        params.socket.emit('commandResponse', {
+          commandId: cmd.id
+        });
+
+        cmd.on('status', function(commandStatus) {
+          params.socket.emit('commandStatus', {
+            commandId: cmd.id,
+            status: commandStatus.status,
+            response: commandStatus.response
+          });
+        });
+
+        cmd.start();
       });
     });
   }

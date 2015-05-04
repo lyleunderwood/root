@@ -24,8 +24,8 @@ var CommandList = function() {
     return this._commands[name];
   };
 
-  this.buildCommand = function(name, args, sessionId, game) {
-    return new (this.getCommand(name))(args, sessionId, game);
+  this.buildCommand = function(name, args, sessionId, socket, game) {
+    return new (this.getCommand(name))(args, sessionId, socket, game);
   };
 };
 
