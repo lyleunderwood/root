@@ -26,11 +26,11 @@ CommandDisplay.prototype.renderers = {
   },
 
   'netscan': function(response) {
-    var disp = '_,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,_<br/>' +
+    var disp = this.anims['netscan_wavy'].getFrame() + '<br/>' +
                '   welcome to   n e t s c a n   v0.8.1<br/>' +
                '   please report bugs on the forum!<br/>' +
                '   and remember to always use responsibly (ゝω･)ﾉ<br/>' +
-               '_,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,_';
+               this.anims['netscan_wavy'].getFrame();
 
     disp += '<br/>Scanning for open nets... (҂⌣̀_⌣́)';
     
@@ -54,3 +54,11 @@ CommandDisplay.prototype.renderers = {
 
   }
 };
+
+CommandDisplay.prototype.anims = [];
+
+CommandDisplay.prototype.anims['netscan_wavy'] = new Animator(200, true, [
+  '_,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,_',
+  '\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,_,.-\'',
+  '.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,_,.-\'~\'-.'
+]);
