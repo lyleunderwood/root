@@ -3,7 +3,12 @@ var CommandDisplay = function(cmd, term) {
 
   this.cmd = cmd;
   this.term = term;
-  this.renderFunc = this.renderers[cmd];
+
+  if(this.renderers.hasOwnProperty(cmd)) {
+    this.renderFunc = this.renderers[cmd];
+  } else {
+    this.renderFunc = this.renderers['default'];
+  }
 
   //create a visible space for the command, and capture the div
   term.echo('', { finalize: function(div) { that.div = div }, raw: true });
@@ -11,16 +16,21 @@ var CommandDisplay = function(cmd, term) {
 };
 
 CommandDisplay.prototype.render = function(resp) {
+
   this.renderFunc.apply(this, [resp]);
 };
 
 CommandDisplay.prototype.renderers = {
+  'default': function(response) {
+    this.div.html('Unknown command');
+  },
+
   'netscan': function(response) {
-    var disp = '*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/>' +
-               '*   welcome to   n e t s c a n   v0.8.1<br/>' +
-               '*   please report bugs on the forum!<br/>' +
-               '*   and remember to always use responsibly (ゝω･)ﾉ<br/>' +
-               '*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*';
+    var disp = '_,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,_<br/>' +
+               '   welcome to   n e t s c a n   v0.8.1<br/>' +
+               '   please report bugs on the forum!<br/>' +
+               '   and remember to always use responsibly (ゝω･)ﾉ<br/>' +
+               '_,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,_';
 
     if(!!response) {
 
