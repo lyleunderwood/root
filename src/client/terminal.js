@@ -23,7 +23,7 @@ var Terminal = function(socket) {
 
   this.socket.on('commandStatus', function(res) {
     if(!!that.currentCommand) {
-      currentCommand.render(res);
+      that.currentCommand.render(res);
     }
   });
 

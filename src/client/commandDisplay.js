@@ -32,12 +32,9 @@ CommandDisplay.prototype.renderers = {
                '   and remember to always use responsibly (ゝω･)ﾉ<br/>' +
                '_,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,__,.-\'~\'-.,_';
 
+    disp += '<br/>Scanning for open nets... (҂⌣̀_⌣́)';
+    
     if(!!response) {
-
-      if(response.status === 'running') {
-        disp += '<br/>Scanning for open nets... (҂⌣̀_⌣́)';
-      }
-
       if(response.status === 'success') {
         disp += '<br/>Open net found! Connecting... (･᷄ὢ･᷅)';
       } else if(response.status === 'failure') {
