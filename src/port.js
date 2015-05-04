@@ -28,6 +28,13 @@ Port.prototype = {
 
   startMountedProgram: function() {
     this.mountedProgram.start();
+  },
+
+  getSummary: function() {
+    return {
+      number: this.number,
+      program: this.mountedProgram ? this.mountedProgram.type : "none"
+    };
   }
 
 };

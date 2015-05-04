@@ -26,6 +26,10 @@ extend(Game.prototype, {
     this.id = idGen.apply(null, this.scans.map(function(scan) { return scan.sessionId; }));
   },
 
+  rigById: function(id) {
+    return this.rigs.filter(function(rig) { return rig.id == id; })[0];
+  },
+
   _buildRigs: function() {
     this.rigs = [];
 

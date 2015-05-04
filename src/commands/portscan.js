@@ -14,7 +14,9 @@ extend(Portscan.prototype, {
   helptext: 'get status of local ports',
 
   run: function() {
-    console.log(this.game);
+    var rig = this.game.rigById(this.sessionId);
+    var ports = rig.ports.map(function(port) { return port.getSummary(); });
+    this.status('success', {ports: ports});
   }
 });
 
