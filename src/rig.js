@@ -1,14 +1,20 @@
 var EventEmitter = require('events').EventEmitter;
 var Port = require('./port');
 var util = require('util');
+var extend = require('extend');
 
-function Rig() {
-  this.constructor.apply(this, arguments);
+function Rig(sessionId, socket) {
+  this.constructor.super_.apply(this, arguments);
+
+  this.id = this.sessionId = sessionId;
+  this.socket = socket;
+
+  this._buildPorts();
 }
 
 util.inherits(Rig, EventEmitter);
 
-Rig.prototype = {
+extend(Rig.prototype, {
   id: null,
 
   sessionId: null,
@@ -19,11 +25,19 @@ Rig.prototype = {
 
   ports: null,
 
-  constructor: function(sessionId, socket) {
-    this.id = this.sessionId = sessionId;
-    this.socket = socket;
+  _setupSocket: function() {
+    var self = this;
+    this.socket.on('command', function(params) {
+      self.emit('command', {
+        sessionId: self.sessionId,
+        name: params.name,
+        arguments: params.arguments
+      });
+    });
+  },
 
-    this._buildPorts();
+  portByNumber: function(portNumber) {
+    return this.ports.filter(function(port) { return port.number == portNumber;  })[0];
   },
 
   _buildPorts: function() {
@@ -47,7 +61,15 @@ Rig.prototype = {
     }
 
     return num;
+  },
+
+  destroy: function() {
+    if (this.socket) {
+      this.socket.removeAllListeners('command');
+    }
+
+    this.removeAllListeners();
   }
-};
+});
 
 module.exports = Rig;

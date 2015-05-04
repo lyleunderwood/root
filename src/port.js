@@ -10,9 +10,24 @@ util.inherits(Port, EventEmitter);
 Port.prototype = {
   number: null,
 
+  mountedProgram: null,
+
   constructor: function(portNumber) {
     console.log(portNumber);
     this.number = portNumber;
+  },
+
+  validateProgramMount: function(programToMount) {
+    return !this.mountedProgram;
+  },
+
+  mountProgram: function(programToMount) {
+    this.mountedProgram = programToMount;
+    this.startMountedProgram();
+  },
+
+  startMountedProgram: function() {
+    this.mountedProgram.start();
   }
 
 };
