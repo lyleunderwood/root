@@ -18,10 +18,14 @@ var CommandList = function() {
 
   this.getCommand = function(name) {
     if (!this._commands[name]) {
-      throw new Error('no cammand found called ' + name + '!');
+      throw new Error('no command found called ' + name + '!');
     }
 
     return this._commands[name];
+  };
+
+  this.buildCommand = function(name, args, sessionId, game) {
+    return new (this.getCommand(name))(args, sessionId, game);
   };
 };
 

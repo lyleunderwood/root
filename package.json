@@ -4,6 +4,7 @@
   "description": "multiplayer hacking game",
   "dependencies": {
     "express": "^4.12.3",
+    "extend": "^2.0.1",
     "socket.io": "^1.3.5"
   },
   "repository": {

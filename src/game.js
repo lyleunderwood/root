@@ -1,27 +1,44 @@
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 var idGen = require('./id_gen');
+var Rig = require('./rig');
+var CommandList = require('./command_list');
+var extend = require('extend');
 
-function Game() {
-  this.constructor.apply(this, arguments);
+function Game(scans) {
+  this.constructor.super_.apply(this, arguments);
+  this.scans = scans;
+  this.makeId();
+
+  this._buildRigs();
 }
 
 util.inherits(Game, EventEmitter);
 
-Game.prototype = {
+extend(Game.prototype, {
   id: null,
 
-  // object where keys are sessionIds and values are sockets
   scans: null,
 
-  constructor: function(scans) {
-    this.scans = scans;
-    this.makeId();
-  },
+  rigs: null,
 
   makeId: function() {
     this.id = idGen.apply(null, this.scans.map(function(scan) { return scan.sessionId; }));
+  },
+
+  _buildRigs: function() {
+    this.rigs = [];
+
+    var self = this;
+    this.scans.forEach(function(scan) {
+      var rig = new Rig(scan.sessionId, scan.socket);
+      self.rigs.push(rig);
+
+      rig.on('command', function(params) {
+        var cmd = CommandList.buildCommand(params.name, params.arguments, params.sessionId, this);
+      });
+    });
   }
-};
+});
 
 module.exports = Game;

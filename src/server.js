@@ -28,7 +28,7 @@ io.on('connection', function(socket) {
     sessionId: sessionId
   });
 
-  var command = new (CommandList.getCommand('netscan'))([1], sessionId);
+  var command = CommandList.buildCommand('netscan', [1], sessionId);
 
   socket.emit('commandResponse', {
     commandId: command.id
