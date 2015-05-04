@@ -65,6 +65,12 @@ extend(Rig.prototype, {
     return num;
   },
 
+  getFoeSummary: function() {
+    return {
+      sessionId: this.sessionId
+    };
+  },
+
   destroy: function() {
     if (this.socket) {
       this.socket.removeAllListeners('command');

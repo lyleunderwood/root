@@ -30,6 +30,10 @@ extend(Game.prototype, {
     return this.rigs.filter(function(rig) { return rig.id == id; })[0];
   },
 
+  findFoeRigs: function(friendId) {
+    return this.rigs.filter(function(rig) { return rig.id != friendId;  });
+  },
+
   _buildRigs: function() {
     this.rigs = [];
 

@@ -16,7 +16,10 @@ var Netscan = function(args, sessionId, socket, game) {
 
   this.matched = function(game) {
     this.status('success', {
-      gameId: game.id
+      gameId: game.id,
+      foes: game.findFoeRigs(this.sessionId).map(function(rig) {
+        return rig.getFoeSummary();
+      })
     });
   };
 };
