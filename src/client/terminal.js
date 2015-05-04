@@ -4,15 +4,12 @@ var Terminal = function(socket) {
   this.socket = socket;
   this.commands = {};
   this.sessionId = '';
+  this.currentCommand = null;
 
+  //this will be a list of display command objects
   this.clientCommands = {
-    'help': {
-      'text': function(args) {
-        return '';
-      },
-      'dynamicText': function(div) {
-        setTimeout(function() { div.html('yooo<br/>whudda'); }, 1000);
-      }
+    'help': function(args) {
+      return 'You have been helped. Thank you.';
     }
   };
 
@@ -21,11 +18,20 @@ var Terminal = function(socket) {
     that.sessionId = res.sessionId;
   });
 
+  this.socket.on('commandResponse', function(res) {
+  });
+
+  this.socket.on('commandStatus', function(res) {
+    if(!!that.currentCommand) {
+      currentCommand.render(res);
+    }
+  });
+
   $(function() {
     $('#terminal').terminal(function(cmd, term) {
         that.execute(cmd, term);
       }, {
-      greetings: 'Welcome to root_net! Please enjoy your stay.',
+      greetings: 'Welcome to root_net! Please enjoy the stay ヽ(･ω･ゞ)',
       name: 'root',
       height: 500,
       prompt: '> '
@@ -50,23 +56,10 @@ Terminal.prototype.execute = function(input, term) {
   }
 
   this.sendCommand(cmd, args);
-
+  this.currentCommand = new CommandDisplay(cmd, term);
+  this.currentCommand.render(null);
 };
 
 Terminal.prototype.sendCommand = function(cmd, args) {
-
   this.socket.emit('command', { sessionId: this.sessionId, name: cmd, arguments: args });
 };
-
-/*
-When a command is executed, a message is sent to the server. This will immediately get a response containing
-the commands ID. Then, periodically, a status update will come with updated information on the command (its 
-status and information specific to the command).
-
-The command itself should connect to these status updated from the server.
-
-In the constructor of the command, it should echo out an empty value, and for the finalize function, store the
-div that will be used by the command to display its updates. Then, the command render function can be called
-and and will update the html of this div. Each render function can take a 
-
-*/
