@@ -14,7 +14,14 @@ extend(Portscan.prototype, {
   helptext: 'get status of local ports',
 
   run: function() {
-    var rig = this.game.rigById(this.sessionId);
+    var rig;
+
+    if (this.args.indexOf('foe') !== -1) {
+      rig = this.game.findFoeRigs(this.sessionId)[0];
+    } else {
+      rig = this.game.rigById(this.sessionId);
+    }
+
     var ports = rig.ports.map(function(port) { return port.getSummary(); });
     this.status('success', {ports: ports});
   }

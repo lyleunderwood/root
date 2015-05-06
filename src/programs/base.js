@@ -3,7 +3,7 @@ var util = require('util');
 var extend = require('extend');
 
 function Program() {
-  this.constructor.super_.apply(this, arguments);
+  EventEmitter.apply(this, arguments);
 }
 
 util.inherits(Program, EventEmitter);

@@ -2,6 +2,7 @@ var EventEmitter = require('events').EventEmitter;
 var Port = require('./port');
 var util = require('util');
 var extend = require('extend');
+var RootProgram = require('./programs/root');
 
 function Rig(sessionId, socket) {
   this.constructor.super_.apply(this, arguments);
@@ -10,6 +11,7 @@ function Rig(sessionId, socket) {
   this.socket = socket;
 
   this._buildPorts();
+  this._setupRoot();
   this._setupSocket();
 }
 
@@ -51,6 +53,15 @@ extend(Rig.prototype, {
     }
   },
 
+  _setupRoot: function() {
+    var portIdx = Math.round(Math.random() * (this.ports.length - 1));
+    var rootPort = this.ports[portIdx];
+    console.log(portIdx, rootPort);
+
+    var program = new RootProgram();
+    rootPort.mountProgram(program);
+  },
+
   _randPortNumber: function(except) {
     if (!except || !except.length) {
       except = [1024];
@@ -75,6 +86,10 @@ extend(Rig.prototype, {
     if (this.socket) {
       this.socket.removeAllListeners('command');
     }
+
+    this.ports.forEach(function(port) {
+      port.destroy();
+    });
 
     this.removeAllListeners();
   }

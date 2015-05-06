@@ -35,6 +35,14 @@ Port.prototype = {
       number: this.number,
       program: this.mountedProgram ? this.mountedProgram.type : "none"
     };
+  },
+
+  destroy: function() {
+    this.removeAllListeners();
+    if (this.mountedProgram) {
+      this.mountedProgram.destroy();
+      delete this.mountedProgram;
+    }
   }
 
 };

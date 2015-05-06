@@ -66,6 +66,24 @@ extend(Game.prototype, {
         cmd.start();
       });
     });
+  },
+
+  won: function(rig) {
+    rig.socket.emit('clientWin', {});
+
+    this.findFoeRigs(rig.sessionId).forEach(function(foeRig) {
+      foeRig.socket.emit('clientDeath', {});
+    });
+
+    this.emit('gameover');
+  },
+
+  destroy: function() {
+    this.rigs.forEach(function(rig) {
+      rig.destroy();
+    });
+
+    this.removeAllListeners();
   }
 });
 

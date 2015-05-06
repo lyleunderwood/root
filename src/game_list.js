@@ -18,6 +18,11 @@ GameList.prototype = {
   addGame: function(game) {
     this.games.push(game);
 
+    game.on('gameover', function() {
+      this.removeGame(game);
+      game.destroy();
+    });
+
     return game;
   },
 
