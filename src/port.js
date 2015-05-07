@@ -38,7 +38,7 @@ Port.prototype = {
   },
 
   destroy: function() {
-    this.removeAllListeners();
+    //this.removeAllListeners();
     if (this.mountedProgram) {
       this.mountedProgram.destroy();
       delete this.mountedProgram;

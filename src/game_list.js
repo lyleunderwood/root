@@ -18,8 +18,9 @@ GameList.prototype = {
   addGame: function(game) {
     this.games.push(game);
 
+    var self = this;
     game.on('gameover', function() {
-      this.removeGame(game);
+      self.removeGame(game);
       game.destroy();
     });
 
