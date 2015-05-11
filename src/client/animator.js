@@ -3,6 +3,7 @@ var Animator = function(delay, loop, frames) {
 
   this.delay = delay || 250;
   this.loop = loop || true;
+  this.play = true;
 
   if(!Array.isArray(frames)) {
     this.frames = [frames];
@@ -14,7 +15,7 @@ var Animator = function(delay, loop, frames) {
     this.frames = ['Broken anim'];
   }
 
-  this.currentFrame = frames[0];
+  this.currentFrame = 0;
 
   //delay of zero means it will be manually updated
   if(delay !== 0) {
@@ -23,23 +24,36 @@ var Animator = function(delay, loop, frames) {
 };
 
 Animator.prototype.getFrame = function() {
-  return this.currentFrame;
+  return this.frames[this.currentFrame];
+};
+
+Animator.prototype.stop = function() {
+  this.play = false;
+};
+
+Animator.prototype.play = function() {
+  if(this.play !== true) {
+    this.play = true;
+    this.updateFrame();
+  }
 };
 
 Animator.prototype.updateFrame = function() {
   var that = this;
 
   //if this is the last frame
-  if(this.frames.indexOf(this.currentFrame) === this.frames.length) {
+  if(this.currentFrame === (this.frames.length - 1)) {
     if(this.loop) {
-      this.currentFrame = this.frames[0];
+      this.currentFrame = 0;
+    } else {
+      this.stop();
     }
   } else {
-    this.currentFrame = this.frames[this.frames.indexOf(this.currentFrame) + 1];
+    this.currentFrame++;
   }
 
   //set up the next frame transition
-  if(this.delay !== 0) {
+  if(this.delay !== 0 && this.play) {
     setTimeout(function() { that.updateFrame() }, this.delay);
   }
 };

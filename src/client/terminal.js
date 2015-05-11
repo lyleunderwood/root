@@ -23,7 +23,7 @@ var Terminal = function(socket) {
 
   this.socket.on('commandStatus', function(res) {
     if(!!that.currentCommand) {
-      that.currentCommand.render(res);
+      that.currentCommand.updateResponse(res);
     }
   });
 
@@ -34,10 +34,12 @@ var Terminal = function(socket) {
       greetings: 'Welcome to root_net! Please enjoy the stay ヽ(･ω･ゞ)',
       name: 'root',
       height: 500,
-      prompt: '> '
+      prompt: '>: '
       }
     );
   });
+
+  setInterval(function() { that.updateTerminal(); }, 200);
 };
 
 Terminal.prototype.execute = function(input, term) {
@@ -56,10 +58,24 @@ Terminal.prototype.execute = function(input, term) {
   }
 
   this.sendCommand(cmd, args);
+
+  if(!!this.currentCommand) {
+    this.currentCommand.stopAnims();
+  }
+
   this.currentCommand = new CommandDisplay(cmd, term);
-  this.currentCommand.render(null);
+  //this.currentCommand.render();
 };
 
 Terminal.prototype.sendCommand = function(cmd, args) {
   this.socket.emit('command', { sessionId: this.sessionId, name: cmd, arguments: args });
+};
+
+Terminal.prototype.updateTerminal = function() {
+
+
+  if(!!this.currentCommand) {
+  console.log('updating terminal', this.currentCommand.resp);
+    this.currentCommand.render();
+  }
 };

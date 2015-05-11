@@ -8,7 +8,8 @@ to hack. This is the means for engaging with another player
 - rend: the action that actually breaks into a port. if it is the root port, you
 win. if it is not the root port, the opposing player can see what port you were 
 using, what program is on there, and maybe other information. rend takes a good 
-chunk of time to complete.
+chunk of time to complete. rend also uninstalls any program that was on that
+port.
 
 - portscan: this will scan all of your own ports, and show you if there has 
 recently been any traffic on that port. if you find that the other player is 
