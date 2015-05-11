@@ -75,7 +75,6 @@ Terminal.prototype.updateTerminal = function() {
 
 
   if(!!this.currentCommand) {
-  console.log('updating terminal', this.currentCommand.resp);
     this.currentCommand.render();
   }
 };
