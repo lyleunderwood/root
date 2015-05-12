@@ -1,4 +1,4 @@
-CommandDisplay.prototype.renderers['trace'] = function(response) {
+CommandDisplay.prototype.renderers['knock'] = function(response) {
   var disp = '';
 
     return disp;

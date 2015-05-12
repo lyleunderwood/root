@@ -1,4 +1,4 @@
-CommandDisplay.prototype.renderers['trace'] = function(response) {
+CommandDisplay.prototype.renderers['portlock'] = function(response) {
   var disp = '';
 
     return disp;
