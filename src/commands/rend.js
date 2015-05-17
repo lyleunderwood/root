@@ -38,10 +38,18 @@ extend(Rend.prototype, {
 
     var port = rig.portByNumber(this.targetPort);
 
-    if (port.mountedProgram && port.mountedProgram.type == 'root') {
-      this.status('success', {message: 'hey you won okay'});
-      return this.game.won(rig);
+    if (port && port.mountedProgram) {
+      if (port.mountedProgram.type == 'root' && false) {
+        this.status('success', {message: 'hey you won okay'});
+        return this.game.won(rig);
+      }
+
+      var programType = port.mountedProgram.type;
+      port.unmountProgram();
+      return this.status('success', {message: 'forced program to unmount: ' + programType});
     }
+
+    return this.status('success', {message: 'nothing to rend on ' + this.targetPort});
   }
 });
 

@@ -26,8 +26,17 @@ Port.prototype = {
     this.startMountedProgram();
   },
 
+  unmountProgram: function() {
+    this.stopMountedProgram();
+    this.mountedProgram = null;
+  },
+
   startMountedProgram: function() {
     this.mountedProgram.start();
+  },
+
+  stopMountedProgram: function() {
+    this.mountedProgram.stop();
   },
 
   getSummary: function() {
